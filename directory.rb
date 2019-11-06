@@ -1,5 +1,5 @@
 def print_header # Print title
-  puts "The students of Villains Academy".center(150)
+  puts "The students of Villains Academy".center(50)
 end
 
 def print(details) # Print names of Students & Cohort
@@ -11,7 +11,7 @@ def print(details) # Print names of Students & Cohort
 end
 
 def print_footer(names) # Print the total of students
-  puts "Overall, we have #{names.count} great students".center(150)
+  puts "Overall, we have #{names.count} great students".center(50)
 end
 
 def date_validation # Date of birth valid?
@@ -31,9 +31,9 @@ def input_students # Store the details of the students
   students = [] # Create array for future data
   while !name.empty? 
     date_validation
-    students << {name: name, date: @date, cohort: "november"} if month.length == 0
+    students << {name: name, date: @date, cohort: :november} if month.length == 0
     students << {name: name, date: @date, cohort: month} if month.length > 0
-    puts "Total of number of students is: #{students.count}".center(150)
+    puts "Total of number of students is: #{students.count}".center(50)
     puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
     name = gets.chomp
     if name.length > 0
