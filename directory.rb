@@ -23,16 +23,23 @@ def date_validation # Date of birth valid?
   end
 end
 
-def input_students
+def input_students # Store the details of the students 
   puts "Please enter the name of the student"
   name = gets.chomp
+  puts "and his cohort"
+  month = gets.chomp.downcase
   students = [] # Create array for future data
-  while !name.empty?
+  while !name.empty? 
     date_validation
-    students << {name: name, date: @date, cohort: :november} # Store the student hash to the Array 
+    students << {name: name, date: @date, cohort: "november"} if month.length == 0
+    students << {name: name, date: @date, cohort: month} if month.length > 0
     puts "Total of number of students is: #{students.count}".center(150)
     puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
     name = gets.chomp
+    if name.length > 0
+      puts "and his cohort"
+      month = gets.chomp.downcase
+    end
   end
   students
 end
