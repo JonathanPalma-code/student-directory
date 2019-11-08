@@ -6,7 +6,7 @@ def print_header(names) # Print title
   end
 end
 
-def print(details) # Print names of Students & Cohort
+def print(details) # Print names of Students, Date of birth & Cohort
   if details == nil
     puts nil
   else
