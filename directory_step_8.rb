@@ -30,15 +30,6 @@ def print_footer(names) # Print the total of students
   end
 end
 
-def date_validation # Date of birth valid?
-  puts "Date of birth (DD-MM-YYYY)"
-  @date = gets.chomp
-  until /(\d{2}-\d{2}-\d{4})/.match(@date)
-    puts "Incorrect format, please try again"
-    @date = gets.chomp
-  end
-end
-
 def input_students # Store the details of the students 
   puts "Please enter the name of the student"
   name = gets.chomp
