@@ -68,6 +68,9 @@ def find_most_similar # Dictionary correction for Cohort implementation
       expect = @months.min_by { |x| (x.chars - @term.chars | @term.chars - x.chars).size + (@term.size - x.size).abs 
       }
       case
+      when @term.empty?
+        @term = "november"
+        puts "Default cohort: #{@term}"
       when @term != expect
         puts "Did you mean #{expect}?, if yes, please retype again."
         @term = STDIN.gets.strip
