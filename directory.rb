@@ -12,10 +12,8 @@ def print_student_list(details) # Print names of Students & Cohort
   if details == nil
     puts nil
   else
-    student_number = 1
     details.each { |student|
-        puts "\n#{student_number}. #{student[:name]}\nDate of birth: #{student[:date]}\n(#{student[:cohort]} cohort)\n"
-        student_number += 1
+        puts "\n#{student[:number]}. #{student[:name]}\nDate of birth: #{student[:date]}\n(#{student[:cohort]} cohort)\n"
     }
   end
 end
@@ -38,7 +36,8 @@ def input_students # Store the details of the students
     while !name.empty?
       find_most_similar
       date_validation
-      @students << {name: name, date: @date, cohort: @term}
+      @students << {number: @student_number,name: name, date: @date, cohort: @term}
+      @student_number += 1
       puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
       name = gets.chomp
@@ -79,36 +78,50 @@ def find_most_similar # Dictionary correction for Cohort implementation
   end
 end
 
-def process(selection)
+def process(selection) # Interactive Menu - Choices
   case selection
   when "1"
     input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
-    exit # this will cause the program to terminate
+    exit # terminates our file
   else
     puts "I don't know what you meant, please try again."
   end 
 end
 
-def print_menu
+def print_menu # Print the Heah of the Interactive menu
   puts "1. Input a Student"
   puts "2. Show the Students"
+  puts "3. Save the list to students.cvs"
   puts "9. Exit"
 end
 
-def show_students
+def show_students # Show the all student's details
   print_header(@students)
   print_student_list(@students)
   print_footer(@students)
 end 
 
-def interactive_menu
+def interactive_menu # Cicle of the interactive Menu until it terminates
+  @student_number = 1
   loop do
     print_menu
     process(gets.chomp)
   end
+end
+
+def save_students # Save a file .csv
+  file = File.open("Students.csv", "w")
+  @students.each { |student|
+    student_data = [student[:number], student[:name], student[:date], student[:cohort]]
+    csv_line = student_data.join("\n")
+    file.puts csv_line
+  }
+  file.close
 end
 
 @months = ["january", # Dictionary of the months   
