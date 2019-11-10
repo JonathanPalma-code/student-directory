@@ -32,7 +32,7 @@ end
 
 def input_students # Store the details of the students 
   puts "Please enter the name of the student"
-  name = STDIN.gets
+  name = STDIN.gets.chomp
     while !name.empty?
       find_most_similar
       date_validation
@@ -40,7 +40,7 @@ def input_students # Store the details of the students
       @student_number += 1
       puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
-      name = STDIN.gets
+      name = STDIN.gets.chomp
       if name.length == 0
         break
       end
@@ -50,17 +50,17 @@ end
 
 def date_validation # Correct date format
   puts "Date of birth (DD-MM-YYYY)"
-  @date = gets.chomp
+  @date = STDIN.gets.chomp
   until /(\d{2}-\d{2}-\d{4})/.match(@date)
     puts "Incorrect format, please try again"
-    @date = gets.chomp
+    @date = STDIN.gets.chomp
   end
 end
 
 def find_most_similar # Dictionary correction for Cohort implementation
   puts "and his cohort"
-  @term = gets.chomp.downcase
-  if @term.length == 0
+  @term = STDIN.gets.strip
+  if @term.empty?
     @term = "november"
     puts "Default cohort: #{@term}"
   else
@@ -70,7 +70,7 @@ def find_most_similar # Dictionary correction for Cohort implementation
       case
       when @term != expect
         puts "Did you mean #{expect}?, if yes, please retype again."
-        @term = gets.chomp.downcase
+        @term = STDIN.gets.strip
       when @term == expect
         break
       end
