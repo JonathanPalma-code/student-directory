@@ -3,7 +3,7 @@ require "colorize"
 
 def print_header(names) # Print title
   if !names.empty?
-    puts "The students of Villains Academy".center(100)
+    puts "The students of Villains Academy".center(100).bold
   else
     nil
   end
@@ -14,7 +14,7 @@ def print_student_list(details) # Print names of Students & Cohort
     puts nil
   else
     details.each { |student|
-        puts "\n#{student[:number]}. #{student[:name]}\nDate of birth: #{student[:date]}\n(#{student[:cohort]} cohort)\n"
+        puts "\n#{student[:number]}. #{student[:name]}\nDate of birth: #{student[:date]}\n(#{student[:cohort]} cohort)"
     }
   end
 end
@@ -22,9 +22,9 @@ end
 def print_footer(names) # Print the total of students
   if !names.empty?
     if names.count <= 1
-      puts "Overall, we have #{names.count} student".center(50)
+      puts "Overall, we have #{names.count} student".center(100).bold
     else
-      puts "Overall, we have #{names.count} students".center(50)
+      puts "Overall, we have #{names.count} students".center(100).bold
     end
   else
     nil
@@ -115,6 +115,7 @@ def process(selection) # Interactive Menu - Choices
 end
 
 def print_menu # Print the Heah of the Interactive menu
+  puts "Please choose a number from the following options:".bold
   puts "1. Input a Student"
   puts "2. Show the Students"
   puts "3. Save the list to Students.cvs"
@@ -132,6 +133,7 @@ def interactive_menu # Cicle of the interactive Menu until it terminates
   @student_number = 1
   loop do
     print_menu
+    puts ""
     input = STDIN.gets.chomp
     process(input)
   end
@@ -141,6 +143,7 @@ def save_students # Save details into a file .csv
   puts "Please, insert the name of the file."
   file_name = STDIN.gets.chomp
   file = File.open(file_name, "w")
+  puts "Details have been saved with success to #{file_name}"
   @students.each { |student|
     student_data = [student[:number], student[:name], student[:date], student[:cohort]]
     csv_line = student_data.join(",")
