@@ -1,3 +1,5 @@
+@students = [] # Create array for future data
+
 def print_header(names) # Print title
   if !names.empty?
     puts "The students of Villains Academy".center(50)
@@ -6,7 +8,7 @@ def print_header(names) # Print title
   end
 end
 
-def print(details) # Print names of Students & Cohort
+def print_student_list(details) # Print names of Students & Cohort
   if details == nil
     puts nil
   else
@@ -33,22 +35,21 @@ end
 def input_students # Store the details of the students 
   puts "Please enter the name of the student"
   name = gets.chomp
-  students = [] # Create array for future data
     while !name.empty?
       find_most_similar
       date_validation
-      students << {name: name, date: @date, cohort: @term}
-      puts "Total of number of students is: #{students.count}".center(50)
+      @students << {name: name, date: @date, cohort: @term}
+      puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
       name = gets.chomp
       if name.length == 0
         break
       end
     end
-  students
+  @students
 end
 
-def date_validation # Date of birth valid?
+def date_validation # Correct date format
   puts "Date of birth (DD-MM-YYYY)"
   @date = gets.chomp
   until /(\d{2}-\d{2}-\d{4})/.match(@date)
@@ -78,6 +79,38 @@ def find_most_similar # Dictionary correction for Cohort implementation
   end
 end
 
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit # this will cause the program to terminate
+  else
+    puts "I don't know what you meant, please try again."
+  end 
+end
+
+def print_menu
+  puts "1. Input a Student"
+  puts "2. Show the Students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header(@students)
+  print_student_list(@students)
+  print_footer(@students)
+end 
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
 @months = ["january", # Dictionary of the months   
   "february",
   "march",
@@ -92,7 +125,5 @@ end
   "december"
 ]
 
-students = input_students
-print_header(students)               # Call ALL the methods
-print(students)
-print_footer(students)
+interactive_menu
+
