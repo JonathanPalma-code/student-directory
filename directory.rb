@@ -32,7 +32,7 @@ end
 
 def input_students # Store the details of the students 
   puts "Please enter the name of the student"
-  name = gets.chomp
+  name = STDIN.gets
     while !name.empty?
       find_most_similar
       date_validation
@@ -40,7 +40,7 @@ def input_students # Store the details of the students
       @student_number += 1
       puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
-      name = gets.chomp
+      name = STDIN.gets
       if name.length == 0
         break
       end
@@ -78,52 +78,6 @@ def find_most_similar # Dictionary correction for Cohort implementation
   end
 end
 
-def process(selection) # Interactive Menu - Choices
-  case selection
-  when "1"
-    input_students
-  when "2"
-    show_students
-  when "3"
-    save_students
-  when "9"
-    exit # terminates our file
-  else
-    puts "I don't know what you meant, please try again."
-  end 
-end
-
-def print_menu # Print the Heah of the Interactive menu
-  puts "1. Input a Student"
-  puts "2. Show the Students"
-  puts "3. Save the list to students.cvs"
-  puts "9. Exit"
-end
-
-def show_students # Show the all student's details
-  print_header(@students)
-  print_student_list(@students)
-  print_footer(@students)
-end 
-
-def interactive_menu # Cicle of the interactive Menu until it terminates
-  @student_number = 1
-  loop do
-    print_menu
-    process(gets.chomp)
-  end
-end
-
-def save_students # Save a file .csv
-  file = File.open("Students.csv", "w")
-  @students.each { |student|
-    student_data = [student[:number], student[:name], student[:date], student[:cohort]]
-    csv_line = student_data.join("\n")
-    file.puts csv_line
-  }
-  file.close
-end
-
 @months = ["january", # Dictionary of the months   
   "february",
   "march",
@@ -138,5 +92,76 @@ end
   "december"
 ]
 
-interactive_menu
+def process(selection) # Interactive Menu - Choices
+  case selection.to_s
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "3"
+    save_students
+  when "4"
+    load_students
+  when "9"
+    exit # terminates our file
+  else
+    puts "I don't know what you meant, please try again."
+  end 
+end
 
+def print_menu # Print the Heah of the Interactive menu
+  puts "1. Input a Student"
+  puts "2. Show the Students"
+  puts "3. Save the list to Students.cvs"
+  puts "4. Load the list from Students.cvs"
+  puts "9. Exit"
+end
+
+def show_students # Show the all student's details
+  print_header(@students)
+  print_student_list(@students)
+  print_footer(@students)
+end 
+
+def interactive_menu # Cicle of the interactive Menu until it terminates
+  @student_number = 1
+  loop do
+    print_menu
+    input = STDIN.gets.chomp
+    process(input)
+  end
+end
+
+def save_students # Save details into a file .csv
+  file = File.open("Students.csv", "w")
+  @students.each { |student|
+    student_data = [student[:number], student[:name], student[:date], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  }
+  file.close
+end
+
+def load_students(filename = "Students.csv") # Load the details from the file to @students variable
+  file = File.open(filename, "r")
+  file.readlines.each { |line|
+  number, name, date, cohort = line.chomp.split(",")
+  @students << {number: number, name: name, date: date, cohort: cohort}
+  }
+  file.close
+end
+
+def try_load_students # Verify if the file exists
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_students
+interactive_menu
