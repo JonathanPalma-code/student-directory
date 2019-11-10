@@ -1,8 +1,9 @@
+require "colorize"
 @students = [] # Create array for future data
 
 def print_header(names) # Print title
   if !names.empty?
-    puts "The students of Villains Academy".center(50)
+    puts "The students of Villains Academy".center(100)
   else
     nil
   end
@@ -38,6 +39,7 @@ def input_students # Store the details of the students
       date_validation
       @students << {number: @student_number,name: name, date: @date, cohort: @term}
       @student_number += 1
+      puts "All the details of #{name} was processed with success.".bold
       puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
       name = STDIN.gets.chomp
@@ -136,7 +138,9 @@ def interactive_menu # Cicle of the interactive Menu until it terminates
 end
 
 def save_students # Save details into a file .csv
-  file = File.open("Students.csv", "w")
+  puts "Please, insert the name of the file."
+  file_name = STDIN.gets.chomp
+  file = File.open(file_name, "w")
   @students.each { |student|
     student_data = [student[:number], student[:name], student[:date], student[:cohort]]
     csv_line = student_data.join(",")
@@ -159,7 +163,7 @@ def try_load_students # Verify if the file exists
   return if filename.nil?
   if File.exists?(filename)
     load_students(filename)
-     puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
     exit
