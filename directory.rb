@@ -37,8 +37,7 @@ def input_students # Store the details of the students
     while !name.empty?
       find_most_similar
       date_validation
-      @students << {number: @student_number,name: name, date: @date, cohort: @term}
-      @student_number += 1
+      @students << {number: @students.count + 1, name: name, date: @date, cohort: @term}
       puts "All the details of #{name} was processed with success.".bold
       puts "Total of number of students is: #{@students.count}".center(50)
       puts "\n(To insert more Students please enter a name. To finish, just hit return twice)."
@@ -130,7 +129,6 @@ def show_students # Show the all student's details
 end 
 
 def interactive_menu # Cicle of the interactive Menu until it terminates
-  @student_number = 1
   loop do
     print_menu
     puts ""
